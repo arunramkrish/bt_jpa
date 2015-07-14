@@ -5,6 +5,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.FlushModeType;
 import javax.persistence.Persistence;
 
+import com.bt.cart.dao.UserDao;
+import com.bt.cart.dao.UserDaoJpaImpl;
 import com.bt.cart.entity.Product;
 import com.bt.cart.entity.User;
 
@@ -19,16 +21,22 @@ public class ShoppingCartClient {
 		
 //		modifyUser(new User("New BT456", "bt@bt.com", "11111111"));
 		
-		addProducts();
+//		addProducts();
+		
+		UserDao userDao = new UserDaoJpaImpl();
+		userDao.create(new User("BT1235", "bt1345@bt.com", "11111111"));
 	}
 
 	private static void addProducts() {
 		EntityManager entityManager = emFactory.createEntityManager();
+		entityManager.getTransaction().begin();
+
 		entityManager.persist(new Product("Xiomi Redmi", 15999F));
 		entityManager.persist(new Product("Samsung Note4", 45999F));
-		entityManager.persist(new Product("iPhone 7", 55999F));
+		entityManager.persist(new Product("Phone 7", 55999F));
 		entityManager.persist(new Product("Nokia 2210", 1999F));
 		
+		entityManager.getTransaction().commit();
 		entityManager.close();
 	}
 

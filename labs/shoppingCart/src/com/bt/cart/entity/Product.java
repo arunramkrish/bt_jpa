@@ -1,10 +1,15 @@
 package com.bt.cart.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+
+import com.bt.cart.dao.LogListener;
 
 @Entity
+@EntityListeners(LogListener.class)
 public class Product {
 	@Id
 	@GeneratedValue
@@ -31,6 +36,11 @@ public class Product {
 		this.price = price;
 	}
 
+//	@PrePersist
+	public void log() {
+		System.out.println("Before persisting product");
+	}
+	
 	public Long getId() {
 		return id;
 	}
