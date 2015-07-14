@@ -1,11 +1,12 @@
 package com.bt.cart.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 
 @Entity
 public class CartLineItem extends LineItem {
-	@ManyToOne
+	@ManyToOne(fetch=FetchType.LAZY)
 	private Cart cart;
 
 	public CartLineItem() {
@@ -31,5 +32,9 @@ public class CartLineItem extends LineItem {
 	public void setCart(Cart Cart) {
 		this.cart = Cart;
 	}
+	
+	
+	
+	
 
 }

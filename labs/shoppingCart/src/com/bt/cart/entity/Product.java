@@ -4,12 +4,15 @@ import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.PrePersist;
 
 import com.bt.cart.dao.LogListener;
 
 @Entity
-//@EntityListeners(LogListener.class)
+@EntityListeners(LogListener.class)
+@NamedQueries({ @NamedQuery(name = "productsByName", query = "select p from Product p where p.name like :name") })
 public class Product {
 	@Id
 	@GeneratedValue
@@ -40,7 +43,7 @@ public class Product {
 	public void log() {
 		System.out.println("Before persisting product");
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -69,6 +72,31 @@ public class Product {
 	public String toString() {
 		return "Product [id=" + id + ", name=" + name + ", price=" + price
 				+ "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Product other = (Product) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 
 }

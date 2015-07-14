@@ -4,4 +4,6 @@ import com.bt.cart.entity.Cart;
 
 public interface CartDao extends GenericDao<Cart, Long> {
 
+	void updateWithLineItems(Cart c);
+
 }

@@ -20,5 +20,6 @@
 	<classpathentry kind="lib" path="E:/Training/BritishTelecom/bt_jpa/labs/dependency/mchange-commons-java-0.2.3.4.jar"/>
 	<classpathentry kind="lib" path="E:/Training/BritishTelecom/bt_jpa/labs/dependency/mysql-connector-java-5.1.29.jar"/>
 	<classpathentry kind="lib" path="E:/Training/BritishTelecom/bt_jpa/labs/dependency/xml-apis-1.0.b2.jar"/>
+	<classpathentry kind="lib" path="lib/cglib-3.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

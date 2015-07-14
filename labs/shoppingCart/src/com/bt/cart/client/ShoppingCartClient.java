@@ -19,7 +19,7 @@ public class ShoppingCartClient {
 
 	public static void main(String[] args) {
 		emFactory = Persistence.createEntityManagerFactory("shopping-cart");
-
+//		addProductsToCart();
 //		addUsers();
 //		modifyUser(4L);
 		
@@ -30,13 +30,42 @@ public class ShoppingCartClient {
 //		UserDao userDao = new UserDaoJpaImpl();
 //		userDao.create(new User("BT1235", "bt1345@bt.com", "11111111"));
 		
+//		Cart c = new Cart();
+//		c.setId(2L);
+//		CartLineItem c1 = new CartLineItem(null, 1, 10000F, c);
+//		CartLineItem c2 = new CartLineItem(null, 2, 10000F, c);
+//		CartLineItem c3 = new CartLineItem(null, 3, 10000F, c);
+//		c.getLineItems().add(c1);
+//		c.getLineItems().add(c2);
+//		c.getLineItems().add(c3);
+		
+		CartDao cartDao = new CartDaoJpaImpl();
+//		cartDao.update(c);
+
+		Cart c2 = cartDao.read(4L);
+//		
+		for (CartLineItem i : c2.getLineItems()) {
+			System.out.println(i);
+		}
+//		cartDao.updateWithLineItems(c);
+	}
+	private static void addProductsToCart() {
 		Cart c = new Cart();
-		CartLineItem c1 = new CartLineItem(null, 100, 10000F, c);
-		CartLineItem c2 = new CartLineItem(null, 200, 10000F, c);
-		CartLineItem c3 = new CartLineItem(null, 300, 10000F, c);
+		Product p1 = new Product();
+		p1.setId(13L);
+		
+		Product p2 = new Product();
+		p2.setId(14L);
+		
+		
+		CartLineItem c1 = new CartLineItem(p1, 1, 10000F, c);
+		CartLineItem c2 = new CartLineItem(p1, 2, 10000F, c);
+		CartLineItem c3 = new CartLineItem(p2, 3, 10000F, c);
+		CartLineItem c4 = new CartLineItem(p2, 3, 10000F, c);
 		c.getLineItems().add(c1);
 		c.getLineItems().add(c2);
 		c.getLineItems().add(c3);
+		c.getLineItems().add(c4);
 		
 		CartDao cartDao = new CartDaoJpaImpl();
 		cartDao.create(c);
