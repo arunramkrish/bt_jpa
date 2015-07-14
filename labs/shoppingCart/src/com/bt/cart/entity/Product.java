@@ -9,7 +9,7 @@ import javax.persistence.PrePersist;
 import com.bt.cart.dao.LogListener;
 
 @Entity
-@EntityListeners(LogListener.class)
+//@EntityListeners(LogListener.class)
 public class Product {
 	@Id
 	@GeneratedValue
@@ -36,7 +36,7 @@ public class Product {
 		this.price = price;
 	}
 
-//	@PrePersist
+	@PrePersist
 	public void log() {
 		System.out.println("Before persisting product");
 	}

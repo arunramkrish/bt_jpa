@@ -1,44 +1,35 @@
 package com.bt.cart.entity;
 
-import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
-public class Cart {
+public class Cart extends BaseEntity {
 	@Id
 	@GeneratedValue
 	private Long id;
 
 	@OneToMany(mappedBy = "cart")
-	private Set<CartLineItem> lineItems;
+	private Set<CartLineItem> lineItems = new LinkedHashSet<CartLineItem>();
 
-	@Temporal(TemporalType.DATE)
-	private Date createdDate;
-
-	@Temporal(TemporalType.DATE)
-	private Date modifiedDate;
-
-	public Cart(Long id, Set<CartLineItem> lineItems, Date createdDate,
-			Date modifiedDate) {
+	public Cart(Long id, Set<CartLineItem> lineItems) {
 		super();
 		this.id = id;
 		this.lineItems = lineItems;
-		this.createdDate = createdDate;
-		this.modifiedDate = modifiedDate;
 	}
 
-	public Cart(Set<CartLineItem> lineItems, Date createdDate, Date modifiedDate) {
+	public Cart(Set<CartLineItem> lineItems) {
 		super();
 		this.lineItems = lineItems;
-		this.createdDate = createdDate;
-		this.modifiedDate = modifiedDate;
+	}
+
+	public Cart() {
+		// TODO Auto-generated constructor stub
 	}
 
 	public Long getId() {
@@ -57,26 +48,10 @@ public class Cart {
 		this.lineItems = lineItems;
 	}
 
-	public Date getCreatedDate() {
-		return createdDate;
-	}
-
-	public void setCreatedDate(Date createdDate) {
-		this.createdDate = createdDate;
-	}
-
-	public Date getModifiedDate() {
-		return modifiedDate;
-	}
-
-	public void setModifiedDate(Date modifiedDate) {
-		this.modifiedDate = modifiedDate;
-	}
-
 	@Override
 	public String toString() {
 		return "Cart [id=" + id + ", lineItems=" + lineItems + ", createdDate="
-				+ createdDate + ", modifiedDate=" + modifiedDate + "]";
+				+ getCreatedDate() + ", modifiedDate=" + getModifiedDate() + "]";
 	}
 
 }

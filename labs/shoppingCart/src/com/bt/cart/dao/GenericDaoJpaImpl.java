@@ -8,7 +8,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceUnit;
 
-public class GenericDaoJpaImpl<T, PK extends Serializable> implements
+public abstract class GenericDaoJpaImpl<T, PK extends Serializable> implements
 		GenericDao<T, PK> {
 
 	protected Class<T> entityClass;

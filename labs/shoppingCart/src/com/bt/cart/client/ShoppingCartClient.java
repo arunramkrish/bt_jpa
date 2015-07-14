@@ -5,8 +5,12 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.FlushModeType;
 import javax.persistence.Persistence;
 
+import com.bt.cart.dao.CartDao;
+import com.bt.cart.dao.CartDaoJpaImpl;
 import com.bt.cart.dao.UserDao;
 import com.bt.cart.dao.UserDaoJpaImpl;
+import com.bt.cart.entity.Cart;
+import com.bt.cart.entity.CartLineItem;
 import com.bt.cart.entity.Product;
 import com.bt.cart.entity.User;
 
@@ -23,8 +27,20 @@ public class ShoppingCartClient {
 		
 //		addProducts();
 		
-		UserDao userDao = new UserDaoJpaImpl();
-		userDao.create(new User("BT1235", "bt1345@bt.com", "11111111"));
+//		UserDao userDao = new UserDaoJpaImpl();
+//		userDao.create(new User("BT1235", "bt1345@bt.com", "11111111"));
+		
+		Cart c = new Cart();
+		CartLineItem c1 = new CartLineItem(null, 100, 10000F, c);
+		CartLineItem c2 = new CartLineItem(null, 200, 10000F, c);
+		CartLineItem c3 = new CartLineItem(null, 300, 10000F, c);
+		c.getLineItems().add(c1);
+		c.getLineItems().add(c2);
+		c.getLineItems().add(c3);
+		
+		CartDao cartDao = new CartDaoJpaImpl();
+		cartDao.create(c);
+		
 	}
 
 	private static void addProducts() {
