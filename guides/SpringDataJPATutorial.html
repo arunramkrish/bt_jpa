@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<!-- saved from url=(0057)http://www.petrikainulainen.net/spring-data-jpa-tutorial/ -->
+<html dir="ltr" lang="en-US" class="wf-pacifico-n4-active wf-active wf-proximanovaaltcondensed-i4-active wf-proximanovaaltcondensed-i7-active wf-proximanovaaltcondensed-i9-active wf-proximanovaaltcondensed-n4-active wf-proximanovaaltcondensed-n7-active wf-proximanovaaltcondensed-n9-active"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" type="text/css" href="./SpringDataJPATutorial_files/default.include.58ce28.css.gzip" media="all">
+<script type="text/javascript" async="" src="./SpringDataJPATutorial_files/ga.js"></script><script src="./SpringDataJPATutorial_files/loz7uhc.js" type="text/javascript" async=""></script><script type="text/javascript" src="./SpringDataJPATutorial_files/default.include.035e44.js.gzip"></script><style type="text/css"></style>
+
+<meta charset="UTF-8">
+<title>Spring Data JPA Tutorial</title>
+<meta name="description" content="This tutorial describes how you can create JPA repositories without writing any boilerplate code.">
+<meta name="robots" content="noodp, noydir">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./SpringDataJPATutorial_files/webfont.js"></script>
+
+
+<link rel="canonical" href="./SpringDataJPATutorial_files/SpringDataJPATutorial.html">
+<script type="text/javascript">
+  (function() {
+    var config = {
+      kitId: 'loz7uhc',
+      scriptTimeout: 3000
+    };
+    var h=document.getElementsByTagName("html")[0];h.className+=" wf-loading";var t=setTimeout(function(){h.className=h.className.replace(/(\s|^)wf-loading(\s|$)/g," ");h.className+=" wf-inactive"},config.scriptTimeout);var tk=document.createElement("script"),d=false;tk.src='//use.typekit.net/'+config.kitId+'.js';tk.type="text/javascript";tk.async="true";tk.onload=tk.onreadystatechange=function(){var a=this.readyState;if(d||a&&a!="complete"&&a!="loaded")return;d=true;clearTimeout(t);try{Typekit.load(config)}catch(b){}};var s=document.getElementsByTagName("script")[0];s.parentNode.insertBefore(tk,s)
+  })();
+</script>
+
+<script type="text/javascript">
+function trackOutboundLink(link, category, action) {
+ 
+try {
+_gaq.push(['_trackEvent', category , action]);
+} catch(err){}
+ 
+setTimeout(function() {
+document.location.href = link.href;
+}, 100);
+}
+</script>
+<link rel="alternate" type="application/rss+xml" title="Petri Kainulainen feed" href="http://www.petrikainulainen.net/feed/">
+<link rel="pingback" href="http://www.petrikainulainen.net/xmlrpc.php">
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Pacifico"><script>
+WebFont.load({
+	google: { families: ['Pacifico'] },
+	timeout: 2000
+});
+</script>
+
+<meta property="fb:app_id" content="281174945245877">
+<meta property="og:title" content="Spring Data JPA Tutorial">
+<meta property="og:description" content="Creating repositories that use the Java Persistence API is a cumbersome process that takes a lot of time and requires a lot of boilerplate code. We can remove some boilerplate code by creating an abstract base repository class that provides CRUD operations for our entities. This means that we can cr…">
+<meta property="og:url" content="http://www.petrikainulainen.net/spring-data-jpa-tutorial/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Petri Kainulainen">
+<meta property="article:published_time" content="2013-01-22T21:18:30+00:00">
+<meta property="article:modified_time" content="2015-07-13T23:31:45+00:00">
+<meta property="og:updated_time" content="2015-07-13T23:31:45+00:00">
+
+<link rel="alternate" type="application/rss+xml" title="Petri Kainulainen » Spring Data JPA Tutorial Comments Feed" href="http://www.petrikainulainen.net/spring-data-jpa-tutorial/feed/">
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"http:\/\/s.w.org\/images\/core\/emoji\/72x72\/","ext":".png","source":{"concatemoji":"http:\/\/www.petrikainulainen.net\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.2.2"}};
+			!function(a,b,c){function d(a){var c=b.createElement("canvas"),d=c.getContext&&c.getContext("2d");return d&&d.fillText?(d.textBaseline="top",d.font="600 32px Arial","flag"===a?(d.fillText(String.fromCharCode(55356,56812,55356,56807),0,0),c.toDataURL().length>3e3):(d.fillText(String.fromCharCode(55357,56835),0,0),0!==d.getImageData(16,16,1,1).data[0])):!1}function e(a){var c=b.createElement("script");c.src=a,c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var f,g;c.supports={simple:d("simple"),flag:d("flag")},c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.simple&&c.supports.flag||(g=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",g,!1),a.addEventListener("load",g,!1)):(a.attachEvent("onload",g),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),f=c.source||{},f.concatemoji?e(f.concatemoji):f.wpemoji&&f.twemoji&&(e(f.twemoji),e(f.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script><script src="./SpringDataJPATutorial_files/wp-emoji-release.min.js" type="text/javascript"></script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+
+
+
+<link rel="stylesheet" id="essb-cct-style-css" href="./SpringDataJPATutorial_files/styles.css" type="text/css" media="all">
+
+
+
+
+
+
+<script type="text/javascript" src="./SpringDataJPATutorial_files/easy-social-share-buttons.js.gzip"></script>
+<script type="text/javascript" src="./SpringDataJPATutorial_files/essb-float.js.gzip"></script>
+<style type="text/css">.essb_links_list li.essb_totalcount_item .essb_t_l_big .essb_t_nb:after, .essb_links_list li.essb_totalcount_item .essb_t_r_big .essb_t_nb:after { color: #777777;content: "Shares";display: block;font-size: 11px;font-weight: normal;text-align: center;text-transform: uppercase;margin-top: -5px; } .essb_links_list li.essb_totalcount_item .essb_t_l_big, .essb_links_list li.essb_totalcount_item .essb_t_r_big { text-align: center; } .essb_displayed_sidebar .essb_links_list li.essb_totalcount_item .essb_t_l_big .essb_t_nb:after, .essb_displayed_sidebar .essb_links_list li.essb_totalcount_item .essb_t_r_big .essb_t_nb:after { margin-top: 0px; } .essb_displayed_sidebar_right .essb_links_list li.essb_totalcount_item .essb_t_l_big .essb_t_nb:after, .essb_displayed_sidebar_right .essb_links_list li.essb_totalcount_item .essb_t_r_big .essb_t_nb:after { margin-top: 0px; } .essb_totalcount_item_before, .essb_totalcount_item_after { display: block !important; } .essb_totalcount_item_before .essb_totalcount, .essb_totalcount_item_after .essb_totalcount { border: 0px !important; } .essb_counter_insidebeforename { margin-right: 5px; font-weight: bold; } .essb_width_columns_1 li { width: 100%; } .essb_width_columns_1 li a { width: 92%; } .essb_width_columns_2 li { width: 49%; } .essb_width_columns_2 li a { width: 86%; } .essb_width_columns_3 li { width: 32%; } .essb_width_columns_3 li a { width: 80%; } .essb_width_columns_4 li { width: 24%; } .essb_width_columns_4 li a { width: 70%; } .essb_width_columns_5 li { width: 19.5%; } .essb_width_columns_5 li a { width: 60%; } .essb_links li.essb_totalcount_item_before, .essb_width_columns_1 li.essb_totalcount_item_after { width: 100%; text-align: left; } .essb_network_align_center a { text-align: center; } .essb_network_align_right .essb_network_name { float: right;} .essb_fixed { background: rgba(255,255,255,0.1) !important; } .essb_totalcount { background: #ffffff !important;} .essb_totalcount, .essb_totalcount .essb_t_nb:after { color: #999999 !important;}</style>
+<script type="text/javascript">var essb_settings = {"ajax_url":"http:\/\/www.petrikainulainen.net\/wp-admin\/admin-ajax.php","essb3_nonce":"fda609b11c","essb3_plugin_url":"http:\/\/www.petrikainulainen.net\/wp-content\/plugins\/easy-social-share-buttons3","essb3_facebook_total":true,"essb3_admin_ajax":true,"essb3_internal_counter":false,"essb3_stats":true,"essb3_ga":false,"essb3_ga_mode":"simple","essb3_counter_button_min":0,"essb3_counter_total_min":0,"blog_url":"http:\/\/www.petrikainulainen.net\/","ajax_type":"wp"};</script><style type="text/css">.broken_link, a.broken_link {
+	text-decoration: line-through;
+}</style><meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@petrikainulaine">
+<meta name="twitter:url" content="http://www.petrikainulainen.net/spring-data-jpa-tutorial/">
+<meta name="twitter:title" content="Spring Data JPA Tutorial">
+<meta name="twitter:description" content="Facebook Twitter Google+ LinkedIn">
+
+<link rel="shortcut icon" href="http://www.petrikainulainen.net/wp-content/themes/thesis/lib/images/favicon.ico"><style type="text/css">.tk-proxima-nova-alt-condensed{font-family:"proxima-nova-alt-condensed",sans-serif;}</style><link rel="stylesheet" href="http://use.typekit.net/c/2387e1/1w;proxima-nova-alt-condensed,2,S9C:N:i4,S97:N:i7,S95:N:i9,S9B:N:n4,S96:N:n7,S94:N:n9/d?3bb2a6e53c9684ffdc9a9bf61f5b2a62850218b0182b3a8f955d7a949a6445a1b31c51f81adbdf9223f6f544d1b1dceb4e143e149dbfbabf29f3e9089dcd78acd83fee54f97995b6de35754a7232470a52b926a3f782d02a4e6a694185650bdf58a59acdd92ec07b57">
+</head>
+<body class="template-page">
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-1702525-2']);
+_gaq.push(['_trackPageview']);
+(function() {
+var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+})();
+</script>
+<div id="header" class="full_width">
+	<div class="inner">
+		<div id="site_title"><a href="http://www.petrikainulainen.net/">Petri Kainulainen</a></div>
+		<div class="navigation">
+			<span class="menu_control">≡ Menu</span>
+<ul id="menu-main-navigation" class="menu menu-main"><li id="menu-item-2779" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-2779"><a href="http://www.petrikainulainen.net/">Home</a></li>
+<li id="menu-item-2772" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-2772"><a href="http://www.petrikainulainen.net/about-me/">About Me</a></li>
+<li id="menu-item-3887" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-3887"><a href="http://www.petrikainulainen.net/blog/">Blog</a></li>
+<li id="menu-item-6134" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-6134"><a href="http://www.petrikainulainen.net/books/">Books</a></li>
+<li id="menu-item-4592" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-4592"><a href="http://www.petrikainulainen.net/tutorials/">Tutorials</a></li>
+</ul>
+		</div>
+	</div>
+</div>
+<div id="promo_bar" class="full_width">
+	<div class="promo">
+		<p>I love getting comments from my readers. Here are <a href="http://www.petrikainulainen.net/uncategorized/the-best-comments-of-june-2015/?utm_source=PetriKainulainenNet&utm_medium=Promobar&utm_campaign=BestComments">the best comments of June 2015</a>.</p>
+	</div>
+</div>
+<div id="content_box" class="full_width">
+	<div class="inner">
+		<div class="content">
+			<article id="post-4534" class="post_box grt top" itemscope="" itemtype="http://schema.org/Article">
+				<header class="headline-container">
+					<h1 class="headline" itemprop="name">Spring Data JPA Tutorial</h1>
+					<div class="byline">
+					</div>
+				</header>
+				<div class="post_content" itemprop="articleBody">
+<div class="essb_links essb_counters essb_displayed_float essb_share essb_template_flat-retina essb_452214827 essb_links_center print-no" id="essb_displayed_float_452214827" data-essb-postid="4534" data-essb-position="float" data-essb-button-style="button" data-essb-template="flat-retina" data-essb-counter-pos="hidden" data-essb-url="http://www.petrikainulainen.net/spring-data-jpa-tutorial/" data-essb-twitter-url="http://www.petrikainulainen.net/spring-data-jpa-tutorial/" data-essb-instance="452214827" style="width: 734px;"><ul class="essb_links_list"><li class="essb_item essb_totalcount_item" data-counter-pos="hidden"><span class="essb_totalcount essb_t_l_big" title=""><span class="essb_total_text"></span><span class="essb_t_nb">92</span></span></li><li class="essb_item essb_link_facebook nolightbox"> <a href="http://www.facebook.com/sharer/sharer.php?u=http://www.petrikainulainen.net/spring-data-jpa-tutorial/&t=Spring+Data+JPA+Tutorial" title="" onclick="essb_window(&#39;http://www.facebook.com/sharer/sharer.php?u=http://www.petrikainulainen.net/spring-data-jpa-tutorial/&amp;t=Spring+Data+JPA+Tutorial&#39;,&#39;facebook&#39;,&#39;452214827&#39;); return false;" target="_blank" rel="nofollow"><span class="essb_icon"></span><span class="essb_network_name">Facebook</span></a><span class="essb_counter_hidden" cnt="39"></span></li><li class="essb_item essb_link_twitter nolightbox"> <a href="http://www.petrikainulainen.net/spring-data-jpa-tutorial/#" title="" onclick="essb_window(&#39;https://twitter.com/intent/tweet?text=Spring+Data+JPA+Tutorial&amp;url=http://www.petrikainulainen.net/spring-data-jpa-tutorial/&amp;counturl=http://www.petrikainulainen.net/spring-data-jpa-tutorial/&amp;related=petrikainulaine&amp;via=petrikainulaine&amp;hashtags=&#39;,&#39;twitter&#39;,&#39;452214827&#39;); return false;" target="_blank" rel="nofollow"><span class="essb_icon"></span><span class="essb_network_name">Twitter</span></a><span class="essb_counter_hidden" cnt="25"></span></li><li class="essb_item essb_link_google nolightbox"> <a href="https://plus.google.com/share?url=http://www.petrikainulainen.net/spring-data-jpa-tutorial/" title="" onclick="essb_window(&#39;https://plus.google.com/share?url=http://www.petrikainulainen.net/spring-data-jpa-tutorial/&#39;,&#39;google&#39;,&#39;452214827&#39;); return false;" target="_blank" rel="nofollow"><span class="essb_icon"></span><span class="essb_network_name">Google+</span></a><span class="essb_counter_hidden" cnt="16"></span></li><li class="essb_item essb_link_linkedin nolightbox"> <a href="http://www.linkedin.com/shareArticle?mini=true&ro=true&trk=EasySocialShareButtons&title=Spring+Data+JPA+Tutorial&url=http://www.petrikainulainen.net/spring-data-jpa-tutorial/" title="" onclick="essb_window(&#39;http://www.linkedin.com/shareArticle?mini=true&amp;ro=true&amp;trk=EasySocialShareButtons&amp;title=Spring+Data+JPA+Tutorial&amp;url=http://www.petrikainulainen.net/spring-data-jpa-tutorial/&#39;,&#39;linkedin&#39;,&#39;452214827&#39;); return false;" target="_blank" rel="nofollow"><span class="essb_icon"></span><span class="essb_network_name">LinkedIn</span></a><span class="essb_counter_hidden" cnt="12"></span></li></ul><div class="essb_native_buttons essb_native_after_share"><ul class="essb_links"></ul></div></div><p><a href="./SpringDataJPATutorial_files/superherorepairmen.jpg"><img class="size-full wp-image-4536 alignright frame post-image" alt="superherorepairmen" src="./SpringDataJPATutorial_files/superherorepairmen.jpg" width="300" height="192"></a></p>
+<p>Creating repositories that use the Java Persistence API is a cumbersome process that takes a lot of time and requires a lot of boilerplate code.</p>
+<p>We can remove some boilerplate code by creating an abstract base repository class that provides CRUD operations for our entities. This means that we can create concrete repositories by extending that base repository class. In other words, we have to write the code that provides CRUD operations only once. </p>
+<p>The problem is that this does not eliminate all boilerplate code. We still have write the code that creates our database queries and invokes them. To make matters worse, we have to do this every time when we create a new database query.</p>
+<p><strong>This is a waste of time!</strong></p>
+<p><a href="http://www.springsource.org/spring-data/jpa" target="_blank">Spring Data JPA</a> was created to solve this problem.</p>
+<h2>Introducing: Spring Data JPA Tutorial</h2>
+<div class="note">
+I am currently updating my Spring Data JPA tutorial. This means that some parts of this tutorial will use a different example application than the original blog posts.</div>
+<h3>The New Tutorial</h3>
+<p>This tutorial describes how you can create JPA repositories without writing any boilerplate code, and it consists of the following blog posts</p>
+<ul>
+<li><a href="http://www.petrikainulainen.net/programming/spring-framework/spring-data-jpa-tutorial-introduction/">Spring Data JPA Tutorial: Introduction</a> provides a quick introduction to Spring Data JPA. It describes what Spring Data JPA really is and provides an overview of the Spring Data repository interfaces.</li>
+<li><a href="http://www.petrikainulainen.net/programming/spring-framework/spring-data-jpa-tutorial-getting-the-required-dependencies/">Spring Data JPA Tutorial: Getting the Required Dependencies</a> describes how you can get the required dependencies.</li>
+<li><a href="http://www.petrikainulainen.net/programming/spring-framework/spring-data-jpa-tutorial-part-one-configuration/">Spring Data JPA Tutorial: Configuration</a> helps you to configure the persistence layer of a Spring application that uses Spring Data JPA and Hibernate.</li>
+<li><a href="http://www.petrikainulainen.net/programming/spring-framework/spring-data-jpa-tutorial-part-two-crud/">Spring Data JPA Tutorial: CRUD</a> describes how you can create a Spring Data JPA repository that provides CRUD operations for an entity.</li>
+<li><a href="http://www.petrikainulainen.net/programming/spring-framework/spring-data-jpa-tutorial-introduction-to-query-methods/">Spring Data JPA Tutorial: Introduction to Query Methods</a> gives a very short introduction to query methods. It also describes what kind of values you can return from your query methods and how you can pass method parameters to your query methods.</li>
+<li><a href="http://www.petrikainulainen.net/programming/spring-framework/spring-data-jpa-tutorial-creating-database-queries-from-method-names/">Spring Data JPA Tutorial: Creating Database Queries From Method Names</a> describes how you can create database queries from the method names of your query methods.</li>
+<li><a href="http://www.petrikainulainen.net/programming/spring-framework/spring-data-jpa-tutorial-creating-database-queries-with-the-query-annotation/">Spring Data JPA Tutorial: Creating Database Queries With the <em>@Query</em> Annotation</a> describes how you can create database queries by annotating your query methods with the <em>@Query</em> annotation.</li>
+<li><a href="http://www.petrikainulainen.net/programming/spring-framework/spring-data-jpa-tutorial-creating-database-queries-with-named-queries/">Spring Data JPA Tutorial: Creating Database Queries With Named Queries</a> describes how you can create database queries by using named queries.</li>
+</ul>
+<h3>The Old Tutorial</h3>
+<p>This nine-part tutorial will help you to get started with Spring Data JPA. This tutorial is based on Spring Data JPA 1.0.2 but its information is also valid for newer versions of Spring Data JPA. On the other hand, if you are interested of reading about Spring Data JPA 1.2.0, you can start by taking a look at my <a href="http://www.petrikainulainen.net/books/spring-data/?utm_source=PetriKainulainenNet&utm_medium=SpringDataJPATutorial&utm_campaign=SpringDataBook">Spring Data book</a>. </p>
+<p>Lets move on and find out what you can learn by reading this tutorial.</p>
+<ul>
+<li><a href="http://www.petrikainulainen.net/programming/spring-framework/spring-data-jpa-tutorial-three-custom-queries-with-query-methods/">Spring Data JPA Tutorial, Part Three: Custom Queries with Query Methods</a> describes how you can create custom queries by adding query methods to your repository interfaces.</li>
+<li><a href="http://www.petrikainulainen.net/programming/spring-framework/spring-data-jpa-tutorial-part-four-jpa-criteria-queries/">Spring Data JPA Tutorial, Part Four: JPA Criteria Queries</a> teaches you to create dynamic queries by using the JPA Criteria API.</li>
+<li><a href="http://www.petrikainulainen.net/programming/spring-framework/spring-data-jpa-tutorial-part-five-querydsl/">Spring Data JPA Tutorial, Part Five: Querydsl</a> describes how you can create custom queries with Querydsl and Spring Data JPA.</li>
+<li><a href="http://www.petrikainulainen.net/programming/spring-framework/spring-data-jpa-tutorial-part-six-sorting/">Spring Data JPA Tutorial, Part Six: Sorting</a> describes how you can sort your query results.</li>
+<li><a href="http://www.petrikainulainen.net/programming/spring-framework/spring-data-jpa-tutorial-part-seven-pagination/">Spring Data JPA Tutorial, Part Seven: Pagination</a> helps you to paginate your query results.</li>
+<li><a href="http://www.petrikainulainen.net/programming/spring-framework/spring-data-jpa-tutorial-part-eight-adding-functionality-to-a-repository/">Spring Data JPA Tutorial, Part Eight: Adding Functionality to a Repository</a> describes how you can add custom functions to a single repository.</li>
+<li><a href="http://www.petrikainulainen.net/programming/spring-framework/spring-data-jpa-tutorial-part-nine-conclusions/">Spring Data JPA Tutorial, Part Nine: Conclusions</a> evaluates the usefulness of Spring Data JPA, gives recommendations about its usage and provides links to useful resources.</li>
+<li><a href="http://www.petrikainulainen.net/programming/spring-framework/spring-data-jpa-tutorial-integration-testing/">Spring Data JPA Tutorial: Integration Testing</a> describes how you can write integration tests for your Spring Data JPA repositories.</li>
+<li><a href="http://www.petrikainulainen.net/programming/spring-framework/spring-data-jpa-tutorial-using-querydsl-in-a-multi-module-maven-project/">Spring Data JPA Tutorial: Using Querydsl in a Multi-module Maven Project</a> describes how you can use Querydsl and Spring Data JPA in a multi-module Maven project.</li>
+</ul>
+<p>Congratulations. If you read every part of this tutorial, you know that implementing data access code does not have to be cumbersome. It can be fast, simple and fun. </p>
+<p>It is time to put your new skills to use.</p>
+<div class="note"><strong>Additional Reading:</strong><p></p>
+<ul>
+<li>My <a href="http://www.petrikainulainen.net/books/spring-data/?utm_source=PetriKainulainenNet&utm_medium=SpringDataJPATutorial&utm_campaign=SpringDataBook">Spring Data book</a> helps you to create JPA repositories without any boilerplate code and tweak the performance of your applications with Spring Data Redis.</li>
+<li><a href="http://www.petrikainulainen.net/spring-data-solr-tutorial/">Spring Data Solr Tutorial</a> describes how you can implement fast search functions with Spring Data Solr.</li>
+<li><a href="http://www.petrikainulainen.net/using-jooq-with-spring/">Using jOOQ with Spring</a> helps you to get back in control of your SQL. If you are tired of solving ORM related performance problems, you should do yourself a favor and read this tutorial.</li>
+</ul></div>
+<h2>Other Resources</h2>
+<p>This section showcases useful material created by other developers. If you have written a blog post or recorded a video about Spring Data JPA, and want to include it to this section, <a href="https://twitter.com/petrikainulaine" target="_blank">ping me on Twitter</a> and I will check it out. If I think that it is useful, I will add it to this section.</p>
+<h3>Java Persistence API</h3>
+<h4>Reference Manuals and Official Guides</h4>
+<ul>
+<li><a href="http://docs.oracle.com/javaee/6/tutorial/doc/bnbpy.html" target="_blank">The Java EE 6 Tutorial Part VI: Persistence</a></li>
+<li><a href="http://www.querydsl.com/static/querydsl/3.3.2/reference/html/" target="_blank">Querydsl Reference Manual</a></li>
+<li><a href="http://www.querydsl.com/static/querydsl/3.3.2/apidocs/" target="_blank">Querydsl API</a></li>
+</ul>
+<h4>Blog Posts</h4>
+<ul>
+<li><a href="http://www.ibm.com/developerworks/java/library/j-typesafejpa/" target="_blank">Dynamic, typesafe queries in JPA 2.0</a></li>
+<li><a href="http://www.altuure.com/2010/09/23/jpa-criteria-api-by-samples-part-i/" target="_blank">JPA Criteria API by samples – Part-I</a></li>
+<li><a href="http://www.altuure.com/2010/09/23/jpa-criteria-api-by-samples-%E2%80%93-part-ii/" target="_blank">JPA Criteria API by samples – Part-II</a></li>
+<li><a href="http://www.jumpingbean.co.za/blogs/jpa2-criteria-api" target="_blank">JPA 2 Criteria API Tutorial</a></li>
+<li><a href="http://www.baeldung.com/jpa-pagination" target="_blank">JPA Pagination</a></li>
+</ul>
+<h4>Videos</h4>
+<ul>
+<li><a href="http://www.youtube.com/watch?v=CV-qLwYKajI" target="_blank">JPA: Embedding Embeddables within Entities</a></li>
+<li><a href="http://www.youtube.com/watch?v=QNYJBe2AZ-I" target="_blank">JPA: One to One Uni/Bi Directional Relationship Tutorial</a></li>
+<li><a href="http://www.youtube.com/watch?v=j1xxxrpbwME" target="_blank">JPA: One to Many Relationship</a></li>
+<li><a href="http://www.youtube.com/watch?v=BO-Gy4XC6QE" target="_blank">JPA: Mapping a Many To Many Relationship</a></li>
+<li><a href="http://www.youtube.com/watch?v=GV2tA3_uKBE" target="_blank">JPA: Self Referencing Relationships</a></li>
+<li><a href="http://www.youtube.com/watch?v=7kjiNuqsSq8" target="_blank">JPA: Inheritance with @MappedSuperclass</a></li>
+<li><a href="http://www.youtube.com/watch?v=yvQrc2WigMc" target="_blank">Inheritance with @Inheritance</a></li>
+<li><a href="http://www.youtube.com/watch?v=fek69xLYJ3Y" target="_blank">JPA: @Inheritance with Table Per Class</a></li>
+<li><a href="http://www.youtube.com/watch?v=KdJ4W7nqhVg" target="_blank">JPQL: The Basics of the Java Persistence Query Language</a></li>
+<li><a href="http://www.youtube.com/watch?v=qlpeBFJWTys" target="_blank">JPA / JPQL: Intermediate Queries with @NamedQuery</a></li>
+<li><a href="http://www.youtube.com/watch?v=J-f4jvljpgQ" target="_blank">Criteria API Introduction</a></li>
+</ul>
+<h3>Spring Data JPA</h3>
+<h4>Reference Manuals and Official Guides</h4>
+<ul>
+<li><a href="http://docs.spring.io/spring-data/jpa/docs/1.5.x/reference/html/" target="_blank">Spring Data JPA Reference Manual</a></li>
+<li><a href="http://docs.spring.io/spring-data/jpa/docs/1.5.x/api/" target="_blank">Spring Data JPA API</a></li>
+<li><a href="http://docs.spring.io/spring-data/rest/docs/2.0.x/reference/html/" target="_blank">Spring Data REST Reference Manual</a></li>
+<li><a href="http://docs.spring.io/spring-data/rest/docs/2.0.x/api/" target="_blank">Spring Data REST API</a></li>
+<li><a href="http://spring.io/blog/2011/02/10/getting-started-with-spring-data-jpa" target="_blank">Getting started with Spring Data JPA</a></li>
+<li><a href="http://spring.io/blog/2011/04/26/advanced-spring-data-jpa-specifications-and-querydsl/" target="_blank">Advanced Spring Data JPA – Specifications and Querydsl</a></li>
+<li><a href="http://spring.io/guides/gs/accessing-data-jpa/" target="_blank">Accessing Data with JPA</a></li>
+<li><a href="https://spring.io/guides/gs/accessing-data-rest/" target="_blank">Accessing JPA Data with REST</a></li>
+</ul>
+<h4>Blog Posts</h4>
+<ul>
+<li><a href="http://fabiomaffioletti.me/blog/2014/04/15/distributed-transactions-multiple-databases-spring-boot-spring-data-jpa-atomikos/" target="_blank">Distributed transactions with multiple databases, Spring Boot, Spring Data JPA and Atomikos</a></li>
+<li><a href="http://scattercode.co.uk/2013/11/18/spring-data-multiple-databases/" target="_blank">Spring Data repositories with multiple databases</a></li>
+<li><a href="http://www.baeldung.com/2011/12/22/the-persistence-layer-with-spring-data-jpa/" target="_blank">The Persistence Layer with Spring Data JPA</a></li>
+<li><a href="http://fruzenshtein.com/spring-jpa-data-hibernate-mysql/" target="_blank">Spring JPA Data + Hibernate + MySQL + MAVEN</a></li>
+<li><a href="https://blog.42.nl/articles/spring-data-jpa-with-querydsl-repositories-made-easy/" target="_blank">Spring Data JPA with QueryDSL: Repositories made easy</a></li>
+<li><a href="http://www.javacodegeeks.com/2013/08/spring-data-rest-in-action.html" target="_blank">Spring Data REST in Action</a></li>
+<li><a href="http://krams915.blogspot.fi/2012/11/spring-mvc-32-with-spring-data-rest.html" target="_blank">Spring MVC 3.2 with Spring Data REST (part 1)</a></li>
+<li><a href="http://krams915.blogspot.fi/2012/11/spring-mvc-32-with-spring-data-rest_20.html" target="_blank">Spring MVC 3.2 with Spring Data REST (part 2)</a></li>
+<li><a href="http://ufasoli.blogspot.ch/2014/02/spring-boot-and-spring-data-jpa.html" target="_blank">Spring boot and spring data jpa tutorial (part 1 / 2)</a></li>
+<li><a href="http://ufasoli.blogspot.fi/2014/02/spring-boot-and-spring-data-jpa_6.html" target="_blank">Spring boot and spring data jpa tutorial (part 2 / 2)</a></li>
+</ul>
+<h4>Videos</h4>
+<ul>
+<li><a href="http://www.youtube.com/watch?v=jIae_pcG-9M" target="_blank">An Introduction to Spring Data</a></li>
+<li><a href="http://www.youtube.com/watch?v=JobDILuItcU" target="_blank">Spring Data Repositories – A Deep Dive</a></li>
+<li><a href="http://www.youtube.com/watch?v=Yg2gCpBCkZw" target="_blank">An Introduction to Spring Data JPA</a></li>
+<li><a href="http://www.youtube.com/watch?v=kM7Gr3XTzIg" target="_blank">Spring Data JPA Configuration Tutorial</a></li>
+<li><a href="http://www.youtube.com/watch?v=8B-mEllEuWE" target="_blank">Configuring Spring Data with a MySQL Database</a></li>
+<li><a href="http://www.youtube.com/watch?v=SKRtcK7Fp3I" target="_blank">Spring Data JPA: Defining Query Methods on Repositories</a></li>
+<li><a href="http://www.youtube.com/watch?v=kaiH1HsacPs" target="_blank">Spring Data REST: Easily export JPA entities directly to the web</a></li>
+<li><a href="http://www.youtube.com/watch?v=hwNyzkWENE0" target="_blank">Spring Data Repositories – Best Practices</a></li>
+<li><a href="http://www.youtube.com/watch?v=TItcLbGTRK0" target="_blank">Integration Testing of Spring Data JPA Repositories</a></li>
+</ul>
+				</div>
+			</article>
+		</div>
+		<div class="sidebar">
+			<div id="social_media_title" class="widget widget_text">
+				<p class="widget_title">Connect with Me</p>
+			</div>
+			<div class="profile-icons">
+				<a class="profile-icon fa fa-twitter" href="https://twitter.com/petrikainulaine"></a>
+				<a class="profile-icon fa fa-google-plus" href="https://plus.google.com/+PetriKainulainen?rel=author"></a>
+				<a class="profile-icon fa fa-linkedin" href="https://www.linkedin.com/in/petrikainulainen"></a>
+				<a class="profile-icon fa fa-youtube" href="https://www.youtube.com/user/Loketus"></a>
+				<a class="profile-icon fa fa-rss" href="http://feeds.feedblitz.com/PetriKainulainen"></a>
+			</div>
+<div class="widget widget_text" id="text-4"><p class="widget_title">Spring Data Book</p>			<div class="textwidget"><img src="./SpringDataJPATutorial_files/springdatabookcoverwidget.jpg" class="widget-book-logo" title="Spring Data Book" alt="Spring Data Book">
+<p><em>Implement JPA repositories with less code and harness the performance of Redis in your applications.</em></p>
+<p><a href="http://www.petrikainulainen.net/books/spring-data/?utm_source=PetriKainulainenNet&utm_medium=SidebarBanner&utm_campaign=SpringDataBook" class="red_button book_button">Read more</a></p></div>
+		</div><div class="widget widget_text" id="text-6"><p class="widget_title">Tutorials</p>			<div class="textwidget"><ul>
+<li><a href="http://www.petrikainulainen.net/getting-started-with-gradle/">Getting Started With Gradle</a></li>
+<li><a href="http://www.petrikainulainen.net/maven-tutorial/">Maven Tutorial</a></li>
+<li><a href="./SpringDataJPATutorial_files/SpringDataJPATutorial.html">Spring Data JPA Tutorial</a></li>
+<li><a href="http://www.petrikainulainen.net/spring-data-solr-tutorial/">Spring Data Solr Tutorial</a></li>
+<li><a href="http://www.petrikainulainen.net/spring-mvc-test-tutorial/">Spring MVC Test Tutorial</a></li>
+<li><a href="http://www.petrikainulainen.net/spring-social-tutorial/">Spring Social Tutorial</a></li>
+<li><a href="http://www.petrikainulainen.net/using-jooq-with-spring/">Using jOOQ with Spring</a></li>
+<li><a href="http://www.petrikainulainen.net/writing-clean-tests/">Writing Clean Tests</a></li>
+<li><a href="http://www.petrikainulainen.net/writing-tests-for-data-access-code/">Writing Tests for Data Access Code</a></li>
+</ul></div>
+		</div><div class="widget search-form" id="thesis-search-widget-2">
+<p class="widget_title">Search</p>
+<form class="search_form" method="get" action="http://www.petrikainulainen.net/">
+	<p>
+		<input class="input_text" type="text" id="s" name="s" value="enter search term and press enter" onfocus="if (this.value == &#39;enter search term and press enter&#39;) {this.value = &#39;&#39;;}" onblur="if (this.value == &#39;&#39;) {this.value = &#39;enter search term and press enter&#39;;}">
+		<input type="hidden" id="searchsubmit" value="Search">
+	</p>
+</form>
+</div>
+			<div class="widget widget_tabbed_posts">
+				<p class="widget_title">From the Blog</p>
+				<ul class="tabs clear">
+					<li class="tab active" data-tab="posts_1">Recent</li>
+					<li class="tab" data-tab="posts_2">Popular</li>
+					<li class="tab" data-tab="posts_3">Favorites</li>
+				</ul>
+				<ul id="posts_1" class="tabbed_posts posts_active">
+					<li><a href="http://www.petrikainulainen.net/uncategorized/the-best-comments-of-june-2015/" title="The Best Comments of June 2015">The Best Comments of June 2015</a></li>
+					<li><a href="http://www.petrikainulainen.net/programming/spring-framework/spring-data-jpa-tutorial-creating-database-queries-with-named-queries/" title="Spring Data JPA Tutorial: Creating Database Queries With Named Queries">Spring Data JPA Tutorial: Creating Database Queries With Named Queries</a></li>
+					<li><a href="http://www.petrikainulainen.net/programming/spring-framework/spring-data-jpa-tutorial-creating-database-queries-with-the-query-annotation/" title="Spring Data JPA Tutorial: Creating Database Queries With the @Query Annotation">Spring Data JPA Tutorial: Creating Database Queries With the @Query Annotation</a></li>
+					<li><a href="http://www.petrikainulainen.net/programming/spring-framework/spring-data-jpa-tutorial-creating-database-queries-from-method-names/" title="Spring Data JPA Tutorial: Creating Database Queries From Method Names">Spring Data JPA Tutorial: Creating Database Queries From Method Names</a></li>
+					<li><a href="http://www.petrikainulainen.net/software-development/technology-evaluation/we-dont-have-time-to-learn-it/" title="We Don’t Have Time to Learn It">We Don’t Have Time to Learn It</a></li>
+				</ul>
+				<ul id="posts_2" class="tabbed_posts">
+					<li><a href="http://www.petrikainulainen.net/programming/spring-framework/adding-social-sign-in-to-a-spring-mvc-web-application-configuration/" title="Adding Social Sign In to a Spring MVC Web Application: Configuration">Adding Social Sign In to a Spring MVC Web Application: Configuration</a></li>
+					<li><a href="http://www.petrikainulainen.net/programming/spring-framework/adding-social-sign-in-to-a-spring-mvc-web-application-registration-and-login/" title="Adding Social Sign In to a Spring MVC Web Application: Registration and Login">Adding Social Sign In to a Spring MVC Web Application: Registration and Login</a></li>
+					<li><a href="http://www.petrikainulainen.net/programming/spring-framework/spring-data-jpa-tutorial-part-two-crud/" title="Spring Data JPA Tutorial: CRUD">Spring Data JPA Tutorial: CRUD</a></li>
+					<li><a href="http://www.petrikainulainen.net/programming/tips-and-tricks/installing-postgresql-9-1-to-windows-7-from-the-binary-zip-distribution/" title="Installing PostgreSQL 9.1 to Windows 7 from the Binary Zip Distribution">Installing PostgreSQL 9.1 to Windows 7 from the Binary Zip Distribution</a></li>
+					<li><a href="http://www.petrikainulainen.net/programming/spring-framework/unit-testing-of-spring-mvc-controllers-normal-controllers/" title="Unit Testing of Spring MVC Controllers: “Normal” Controllers">Unit Testing of Spring MVC Controllers: “Normal” Controllers</a></li>
+				</ul>
+				<ul id="posts_3" class="tabbed_posts">
+					<li><a href="http://www.petrikainulainen.net/programming/spring-framework/spring-data-jpa-tutorial-creating-database-queries-with-named-queries/" title="Spring Data JPA Tutorial: Creating Database Queries With Named Queries">Spring Data JPA Tutorial: Creating Database Queries With Named Queries</a></li>
+					<li><a href="http://www.petrikainulainen.net/programming/spring-framework/spring-data-jpa-tutorial-creating-database-queries-with-the-query-annotation/" title="Spring Data JPA Tutorial: Creating Database Queries With the @Query Annotation">Spring Data JPA Tutorial: Creating Database Queries With the @Query Annotation</a></li>
+					<li><a href="http://www.petrikainulainen.net/programming/spring-framework/spring-data-jpa-tutorial-creating-database-queries-from-method-names/" title="Spring Data JPA Tutorial: Creating Database Queries From Method Names">Spring Data JPA Tutorial: Creating Database Queries From Method Names</a></li>
+					<li><a href="http://www.petrikainulainen.net/programming/spring-framework/spring-data-jpa-tutorial-introduction-to-query-methods/" title="Spring Data JPA Tutorial: Introduction to Query Methods">Spring Data JPA Tutorial: Introduction to Query Methods</a></li>
+					<li><a href="http://www.petrikainulainen.net/programming/spring-framework/spring-from-the-trenches-returning-git-commit-information-as-json/" title="Spring From the Trenches: Returning Git Commit Information as JSON">Spring From the Trenches: Returning Git Commit Information as JSON</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="footer" class="full_width">
+	<div class="inner">
+		<p class="attribution">© 2010-Present Petri Kainulainen
+<br>
+All post images are property of their respective owners and may not be reused.
+<br>
+<a href="http://www.petrikainulainen.net/sitemap">Sitemap</a></p>
+	</div>
+</div>
+
+<script type="text/javascript">var essb_handle_stats = function(oService, oPostID, oInstance) { var element = jQuery('.essb_'+oInstance); var instance_postion = jQuery(element).attr("data-essb-position") || ""; var instance_template = jQuery(element).attr("data-essb-template") || ""; var instance_button = jQuery(element).attr("data-essb-button-style") || ""; var instance_counters = jQuery(element).hasClass("essb_counters") ? true : false; var instance_nostats = jQuery(element).hasClass("essb_nostats") ? true : false; if (instance_nostats) { return; } var instance_mobile = false; if( (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i).test(navigator.userAgent) ) { instance_mobile = true; } if (typeof(essb_settings) != "undefined") { jQuery.post(essb_settings.ajax_url, { 'action': 'essb_stat_log', 'post_id': oPostID, 'service': oService, 'template': instance_template, 'mobile': instance_mobile, 'position': instance_postion, 'button': instance_button, 'counter': instance_counters, 'nonce': essb_settings.essb3_nonce }, function (data) { if (data) { }},'json'); } }; var essb_window = function(oUrl, oService, oInstance) { var element = jQuery('.essb_'+oInstance); console.log("button trigger on " + oService+", instance = "+oInstance); var instance_post_id = jQuery(element).attr("data-essb-postid") || ""; var instance_position = jQuery(element).attr("data-essb-position") || ""; var wnd; var w = 800 ; var h = 500; if (oService == "twitter") { w = 500; h= 300; } var left = (screen.width/2)-(w/2); var top = (screen.height/2)-(h/2); if (oService == "twitter") { wnd = window.open( oUrl, "essb_share_window", "height=300,width=500,resizable=1,scrollbars=yes,top="+top+",left="+left ); } else { wnd = window.open( oUrl, "essb_share_window", "height=500,width=800,resizable=1,scrollbars=yes,top="+top+",left="+left ); } if (typeof(essb_settings) != "undefined") { if (essb_settings.essb3_stats) { if (typeof(essb_handle_stats) != "undefined") { essb_handle_stats(oService, instance_post_id, oInstance); } } if (essb_settings.essb3_ga) { essb_ga_tracking(oService, oUrl, instance_position); } } essb_self_postcount(oService, instance_post_id); var pollTimer = window.setInterval(function() { if (wnd.closed !== false) { window.clearInterval(pollTimer); essb_smart_onclose_events(oService, instance_post_id); } }, 200); }; var essb_self_postcount = function(oService, oCountID) { if (typeof(essb_settings) != "undefined") { oCountID = String(oCountID); jQuery.post(essb_settings.ajax_url, { 'action': 'essb_self_postcount', 'post_id': oCountID, 'service': oService, 'nonce': essb_settings.essb3_nonce }, function (data) { if (data) { }},'json'); } }; var essb_smart_onclose_events = function(oService, oPostID) { if (typeof (essbasc_popup_show) == 'function') { essbasc_popup_show(); } if (typeof essb_acs_code == 'function') { essb_acs_code(oService, oPostID); } }; var essb_tracking_only = function(oUrl, oService, oInstance, oAfterShare) { var element = jQuery('.essb_'+oInstance); if (oUrl == "") { oUrl = document.URL; } var instance_post_id = jQuery(element).attr("data-essb-postid") || ""; var instance_position = jQuery(element).attr("data-essb-position") || ""; if (typeof(essb_settings) != "undefined") { if (essb_settings.essb3_stats) { if (typeof(essb_handle_stats) != "undefined") { essb_handle_stats(oService, instance_post_id, oInstance); } } if (essb_settings.essb3_ga) { essb_ga_tracking(oService, oUrl, instance_position); } } essb_self_postcount(oService, instance_post_id); if (oAfterShare) { essb_smart_onclose_events(oService, instance_post_id); } }; var essb_pinterest_picker = function(oInstance) { essb_tracking_only('', 'pinterest', oInstance); var e=document.createElement('script'); e.setAttribute('type','text/javascript'); e.setAttribute('charset','UTF-8'); e.setAttribute('src','//assets.pinterest.com/js/pinmarklet.js?r='+Math.random()*99999999);document.body.appendChild(e); };</script><script type="text/javascript">
+(function(){
+	var classes = document.getElementsByClassName('menu_control');
+	for (i = 0; i < classes.length; i++) {
+		classes[i].onclick = function() {
+			var menu = this.nextElementSibling;
+			if (/show_menu/.test(menu.className))
+				menu.className = menu.className.replace('show_menu', '').trim();
+			else
+				menu.className += ' show_menu';
+		};
+	}
+})();
+</script>
+<noscript>&lt;style type="text/css" scoped&gt;.menu-main { display: block; }&lt;/style&gt;</noscript>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+	$('.tab').click(function() {
+		$('.active').removeClass('active');
+		$(this).addClass('active');
+		$('.posts_active').removeClass('posts_active');
+		$('#' + $(this).data('tab')).addClass('posts_active');
+	});
+});
+</script>
+
+
+
+
+<!-- Performance optimized by W3 Total Cache. Learn more: http://www.w3-edge.com/wordpress-plugins/
+
+Minified using disk
+Page Caching using disk: enhanced
+Content Delivery Network via Amazon Web Services: CloudFront: d2x79bjupkp9on.cloudfront.net
+
+ Served from: www.petrikainulainen.net @ 2015-07-14 13:00:37 by W3 Total Cache --></body></html>
