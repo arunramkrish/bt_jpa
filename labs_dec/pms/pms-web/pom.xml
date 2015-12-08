@@ -1,0 +1,87 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.bt.jpa</groupId>
+    <artifactId>pms-parent</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  <artifactId>pms-web</artifactId>
+  <packaging>war</packaging>
+  <name>pms-web</name>
+  <description>PMS Web application</description>
+  
+  	<properties>
+		<webapp.name>pms</webapp.name>
+	</properties>
+	<build>
+		<finalName>${webapp.name}</finalName>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.tomcat.maven</groupId>
+					<artifactId>tomcat7-maven-plugin</artifactId>
+					<version>2.2</version>
+					<configuration>
+						<source>1.7</source>
+						<!-- http port -->
+						<port>8080</port>
+						<!-- application path always starts with / -->
+						<path>/${webapp.name}</path>
+						<!-- optional path to a context file -->
+						<!-- <contextFile>${tomcatContextXml}</contextFile> -->
+						<!-- optional system propoerties you want to add -->
+						<systemProperties>
+							<appserver.base>${project.build.directory}/appserver-base</appserver.base>
+							<appserver.home>${project.build.directory}/appserver-home</appserver.home>
+							<derby.system.home>${project.build.directory}/appserver-base/logs</derby.system.home>
+							<java.io.tmpdir>${project.build.directory}</java.io.tmpdir>
+							<APP_ENV>dev</APP_ENV>
+						</systemProperties>
+						<!-- if you want to use test dependencies rather than only runtime -->
+						<useTestClasspath>false</useTestClasspath>
+						<!-- optional if you want to add some extra directories into the classloader -->
+						<additionalClasspathDirs>
+							<additionalClasspathDir></additionalClasspathDir>
+						</additionalClasspathDirs>
+						<contextReloadable>true</contextReloadable>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.bt.jpa</groupId>
+			<artifactId>pms-core</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<!-- <version>${jackson.mapper.version}</version> -->
+			<version>1.7.1</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<!-- <version>${servlet.version}</version> -->
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<!-- <version>${jsp.version}</version> -->
+			<version>2.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<!-- <version>${jstl.version}</version> -->
+			<version>1.2</version>
+			<scope>compile</scope>
+		</dependency>
+	</dependencies>
+</project>
