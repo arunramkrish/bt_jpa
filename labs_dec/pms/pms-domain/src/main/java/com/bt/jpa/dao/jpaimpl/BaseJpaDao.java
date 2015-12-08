@@ -6,12 +6,19 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.bt.jpa.common.exception.DataAccessException;
 import com.bt.jpa.dao.BaseDao;
 import com.bt.jpa.dao.BaseEntity;
 
+@Repository
+@Transactional(propagation = Propagation.MANDATORY, readOnly = false)
 public abstract class BaseJpaDao<T extends BaseEntity<V>, V extends Serializable> implements BaseDao<T, V> {
-    @PersistenceContext(name = "entityManagerFactory", unitName = "pms")
+    
+	@PersistenceContext(name = "entityManagerFactory", unitName = "pms")
     protected EntityManager entityManager;
 
 
