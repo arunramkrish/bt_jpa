@@ -4,13 +4,16 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import com.bt.jpa.common.exception.DataAccessException;
 import com.bt.jpa.dao.BaseDao;
 import com.bt.jpa.dao.BaseEntity;
 
 public abstract class BaseJpaDao<T extends BaseEntity<V>, V extends Serializable> implements BaseDao<T, V> {
-	protected EntityManager entityManager;
+    @PersistenceContext(name = "entityManagerFactory", unitName = "pms")
+    protected EntityManager entityManager;
+
 
 	public EntityManager getEntityManager() {
 		return entityManager;

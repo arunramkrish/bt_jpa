@@ -18,13 +18,51 @@
 	default-init-method="init">
 
 	<context:property-placeholder
-		location="classpath:config/pms-domain.properties, classpath:config/pms-core.properties" />
+		location="classpath:config/pms-domain.properties" />
 
+	<!-- enabling annotation driven configuration / -->
+	<context:annotation-config />
+	
 	<context:component-scan base-package="com.bt.jpa" />
 
-	<import resource="classpath:spring-context/pms-domain-ctx.xml" />
+	<bean class="org.springframework.orm.jpa.support.PersistenceAnnotationBeanPostProcessor" />
+	<bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+  
+	<tx:annotation-driven transaction-manager="transactionManager"/>
 
-	<tx:annotation-driven transaction-manager="transactionManager"
-		proxy-target-class="true" />
+	<bean id="dataSource" class="${database.poolClassName}">
+		<property name="username" value="${database.username}" />
+		<property name="password" value="${database.password}" />	
+		<property name="driverClassName" value="${database.driverClassName}" />
+		<property name="url" value="${database.url}" />
+		<property name="initialSize" value="${database.initialSize}" />
+		<property name="maxActive" value="${database.maxActive}" />
+		<property name="minIdle" value="${database.minIdle}" />
+		<property name="maxIdle" value="${database.maxIdle}" />
+		<property name="maxWait" value="${database.maxWait}" />
+		<property name="testWhileIdle" value="${database.testWhileIdle}" />
+		<property name="timeBetweenEvictionRunsMillis" value="${database.timeBetweenEvictionRunsMillis}" />
+		<property name="validationQuery" value="${database.validationQuery}" />
+	</bean>
+	
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
+		p:entityManagerFactory-ref="entityManagerFactory" />
 
-</beans>
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
+		p:dataSource-ref="dataSource" p:jpaPropertyMap-ref="jpaProviderPropertyMap"
+		p:jpaDialect-ref="jpaDialect" p:persistenceUnitName="pms"
+		p:persistenceXmlLocation="classpath:META-INF/persistence.xml">
+		<property name="loadTimeWeaver">
+			<bean class="org.springframework.instrument.classloading.InstrumentationLoadTimeWeaver" />
+		</property>
+	</bean>
+
+	<util:map id="jpaProviderPropertyMap">
+		<entry key="hibernate.show_sql" value="${jpa.showSql}" />
+		<entry key="hibernate.format_sql" value="true" />
+		<entry key="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
+		<entry key="javax.persistence.retrieveMode" value="BYPASS" />
+		<entry key="javax.persistence.storeMode" value="BYPASS" />
+	</util:map>
+
+	<bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" /></beans>
