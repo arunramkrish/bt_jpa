@@ -63,6 +63,7 @@
 		<entry key="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
 		<entry key="javax.persistence.retrieveMode" value="BYPASS" />
 		<entry key="javax.persistence.storeMode" value="BYPASS" />
+		<entry key="hibernate.hbm2ddl.auto" value="update" />
 	</util:map>
 
 	<bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" /></beans>
