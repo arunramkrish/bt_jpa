@@ -15,8 +15,12 @@ public class EmployeeJpaDao extends BaseJpaDao<Employee, Long> implements Employ
 
 	@Override
 	public List<Employee> getEmployeesInDepartment(Department department) {
-		TypedQuery<Employee> query = getEntityManager().createQuery(
-				"from Employee e where e.department.id = " + department.getId(), Employee.class);
+//		TypedQuery<Employee> query = getEntityManager().createQuery(
+//				"from Employee e where e.department.id = :deptId", Employee.class);
+		
+		TypedQuery<Employee> query = getEntityManager().createNamedQuery("getEmployeesInDepartment", Employee.class);
+		query.setParameter("deptId", department.getId());
+		
 		return query.getResultList();
 	}
 

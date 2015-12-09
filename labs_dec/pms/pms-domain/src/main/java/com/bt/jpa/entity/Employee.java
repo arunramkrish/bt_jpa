@@ -14,7 +14,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.LockModeType;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -24,6 +27,8 @@ import com.bt.jpa.dao.BaseEntity;
 
 @Entity
 @Table(name = "employee")
+@NamedQueries({ @NamedQuery(name = "getEmployeesInDepartment", 
+query = "select e from Employee e where e.department.id = :deptId", lockMode = LockModeType.READ) })
 public class Employee extends BaseEntity<Long> {
 	@Id
 	@GeneratedValue
@@ -174,9 +179,7 @@ public class Employee extends BaseEntity<Long> {
 
 	@Override
 	public String toString() {
-		return "Employee [id=" + id + ", firstName=" + firstName
-				+ ", lastName=" + lastName + ", salary=" + salary
-				+ ", startDate=" + startDate + ", endDate=" + endDate
-				+ ", phoneNo=" + phoneNo + "]" + department.getDepartmentName();
+		return "Employee [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", salary=" + salary + ", startDate="
+				+ startDate + ", endDate=" + endDate + ", phoneNo=" + phoneNo + "]" + department.getDepartmentName();
 	}
 }

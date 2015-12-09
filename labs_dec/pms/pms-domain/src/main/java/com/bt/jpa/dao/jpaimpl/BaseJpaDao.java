@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
@@ -20,7 +21,7 @@ import com.bt.jpa.dao.BaseEntity;
 @Transactional(propagation = Propagation.MANDATORY, readOnly = false)
 public abstract class BaseJpaDao<T extends BaseEntity<V>, V extends Serializable> implements BaseDao<T, V> {
 
-	@PersistenceContext(name = "entityManagerFactory", unitName = "pms")
+	@PersistenceContext(type=PersistenceContextType.TRANSACTION, name = "entityManagerFactory", unitName = "pms")
 	protected EntityManager entityManager;
 
 	public EntityManager getEntityManager() {
